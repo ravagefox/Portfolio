@@ -1,0 +1,330 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1CB600B0-2E3A-49CF-8F55-268908353FC4}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Wargame</RootNamespace>
+    <AssemblyName>Wargame</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>embedded</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\04 - BUILD\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\04 - BUILD\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\04 - BUILD\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>embedded</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Engine.Assets, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Assets.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Engine.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Engine.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Engine.Diagnostics, Version=0.0.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Diagnostics.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Engine.Editor, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Engine.Graphics, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Graphics.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Engine.Graphics.Animation, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Graphics.Animation.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Engine.Graphics.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Graphics.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Engine.Linq, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Linq.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Engine.Math, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Math.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Engine.Net, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Engine.Physics, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Physics.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="LZ4, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\LZ4.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MIX">
+      <HintPath>..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\MIX.exe</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MonoGame.Framework, Version=3.7.1.189, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MoonSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\MoonSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\Gos\Camera.cs" />
+    <Compile Include="Data\Gos\CameraTypes\FirstPersonCamera.cs" />
+    <Compile Include="Data\Gos\Components\KeyboardComponent.cs" />
+    <Compile Include="Data\Gos\Components\ModelRenderer.cs" />
+    <Compile Include="Data\Gos\Components\MouseLookComponent.cs" />
+    <Compile Include="Data\Gos\Components\RigidBody.cs" />
+    <Compile Include="Data\Gos\Components\Transform.cs" />
+    <Compile Include="Data\Gos\DeferredObject.cs" />
+    <Compile Include="Data\Gos\PointLight.cs" />
+    <None Include="Data\Gos\WeaponAssets\WeaponBase.cs" />
+    <Compile Include="Data\Gos\WorldObject.cs" />
+    <Compile Include="Data\Graphics\DeferredContext\CascadeShadowRenderSystem.cs" />
+    <Compile Include="Data\Graphics\DeferredContext\DeferredRenderSystem.cs" />
+    <Compile Include="Data\Graphics\DeferredContext\EditorRenderSystem.cs" />
+    <Compile Include="Data\Graphics\DeferredContext\PointLightRenderSystem.cs" />
+    <Compile Include="Data\Graphics\DeferredContext\SsaoRenderSystem.cs" />
+    <Compile Include="Data\Graphics\Editor\GizmoComponent.cs" />
+    <Compile Include="Data\Graphics\Editor\ObjectPicker.cs" />
+    <Compile Include="Data\Graphics\InstanceRenderSystem.cs" />
+    <Compile Include="Data\Graphics\RenderManager.cs" />
+    <Compile Include="Data\Graphics\RenderSystemBase.cs" />
+    <Compile Include="Data\Graphics\Shaders\ClearEffect.cs" />
+    <Compile Include="Data\Graphics\Shaders\CombineEffect.cs" />
+    <Compile Include="Data\Graphics\Shaders\DeferredObjectEffect.cs" />
+    <Compile Include="Data\Graphics\Shaders\DepthEffect.cs" />
+    <Compile Include="Data\Graphics\Shaders\PointLightEffect.cs" />
+    <Compile Include="Data\Graphics\Shaders\ShaderBase.cs" />
+    <Compile Include="Data\Graphics\Shaders\CascadeShadowMeshEffect.cs" />
+    <Compile Include="Data\Graphics\Shaders\SpotLightEffect.cs" />
+    <Compile Include="Data\Graphics\Shaders\SsaoEffect.cs" />
+    <Compile Include="Data\IO\AssetManager.cs" />
+    <Compile Include="Data\IO\ContentReaders\ConvertHandlers.cs" />
+    <Compile Include="Data\IO\ContentReaders\EffectReader.cs" />
+    <Compile Include="Data\IO\ContentReaders\ModelReader.cs" />
+    <Compile Include="Data\IO\ContentReaders\Texture2DReader.cs" />
+    <Compile Include="Data\IO\ContentReaders\UserInterface.cs" />
+    <None Include="Data\Scenes\__OBSOLETE_WorldScene.cs" />
+    <Compile Include="Data\IO\IObjectSerialization.cs" />
+    <Compile Include="Data\IO\Map\MapReader.cs" />
+    <Compile Include="Data\IO\Map\MapWriter.cs" />
+    <Compile Include="Data\IO\Map\Serializers\SceneSerializer.cs" />
+    <Compile Include="Data\Math\BoundingOcttree.cs" />
+    <Compile Include="Data\Math\BoundingOctreeNode.cs" />
+    <Compile Include="Data\Math\IBoundContainer.cs" />
+    <Compile Include="Data\Math\OBB.cs" />
+    <Compile Include="Data\Physics\PhysicsWorld.cs" />
+    <Compile Include="Data\Scenes\WorldScene.cs" />
+    <Compile Include="Extensions\BoundingBoxExtensions.cs" />
+    <Compile Include="Extensions\DebugDrawExtensions.cs" />
+    <Compile Include="Extensions\QuaternionExtensions.cs" />
+    <Compile Include="Extensions\Vector2Extensions.cs" />
+    <Compile Include="Extensions\Vector4Extensions.cs" />
+    <Compile Include="MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Assets.dll">
+      <Link>Data\Binaries\Engine.Assets.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Core.dll">
+      <Link>Data\Binaries\Engine.Core.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Data.dll">
+      <Link>Data\Binaries\Engine.Data.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Diagnostics.dll">
+      <Link>Data\Binaries\Engine.Diagnostics.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Editor.dll">
+      <Link>Data\Binaries\Engine.Editor.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Graphics.Animation.dll">
+      <Link>Data\Binaries\Engine.Graphics.Animation.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Graphics.dll">
+      <Link>Data\Binaries\Engine.Graphics.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Graphics.UI.dll">
+      <Link>Data\Binaries\Engine.Graphics.UI.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Linq.dll">
+      <Link>Data\Binaries\Engine.Linq.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Math.dll">
+      <Link>Data\Binaries\Engine.Math.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Net.dll">
+      <Link>Data\Binaries\Engine.Net.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\Engine.Physics.dll">
+      <Link>Data\Binaries\Engine.Physics.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\LZ4.dll">
+      <Link>Data\Binaries\LZ4.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\MIX.exe">
+      <Link>Data\Binaries\MIX.exe</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\MoonSharp.dll">
+      <Link>Data\Binaries\MoonSharp.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\SharpDX.D3DCompiler.dll">
+      <Link>Data\Binaries\SharpDX.D3DCompiler.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\SharpDX.Direct2D1.dll">
+      <Link>Data\Binaries\SharpDX.Direct2D1.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\SharpDX.Direct3D11.dll">
+      <Link>Data\Binaries\SharpDX.Direct3D11.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\SharpDX.dll">
+      <Link>Data\Binaries\SharpDX.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\SharpDX.DXGI.dll">
+      <Link>Data\Binaries\SharpDX.DXGI.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\SharpDX.MediaFoundation.dll">
+      <Link>Data\Binaries\SharpDX.MediaFoundation.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\SharpDX.XAudio2.dll">
+      <Link>Data\Binaries\SharpDX.XAudio2.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Game Engines\GameEngine\02 - COMPILED\x64\Debug\SharpDX.XInput.dll">
+      <Link>Data\Binaries\SharpDX.XInput.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="C:\Program Files %28x86%29\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll">
+      <Link>Data\Binaries\MonoGame.Framework.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\CrexiumSplash.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
