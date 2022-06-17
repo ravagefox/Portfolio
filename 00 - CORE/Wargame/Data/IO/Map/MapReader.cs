@@ -27,46 +27,47 @@ namespace Wargame.Data.IO.Map
 {
     public sealed class MapReader : IDisposable
     {
-
         public List<Assembly> SearchAssemblies { get; }
 
 
         private BinaryReader reader;
 
 
-        public MapReader(Stream mapStream)
+        public MapReader(Stream instream)
         {
-            this.SearchAssemblies = new List<Assembly>();
-            this.reader = new BinaryReader(mapStream, Encoding.UTF8);
-
-            if (!this.reader.ReadChars(MapWriter.MAGIC.Length).SequenceEqual(
-                MapWriter.MAGIC))
+            this.SearchAssemblies = new List<Assembly>()
             {
-                throw new InvalidDataException(
-                    "The header appears to be corrupt or invalid.");
-            }
+                typeof(MapReader).Assembly,
+            };
+
+            var encoding = this.ReadEncoding(instream);
+            this.reader = new BinaryReader(instream, encoding);
+
+            this.ReadHeader();
         }
 
-        public Guid ReadGuid() { return new Guid(this.reader.ReadBytes(16)); }
-
-        public uint ReadUInt32() { return this.reader.ReadUInt32(); }
-
-        public int ReadInt32() { return this.reader.ReadInt32(); }
-
+        public string ReadString()
+        {
+            var len = this.reader.ReadInt32();
+            var chars = this.reader.ReadChars(len);
+            return new string(chars);
+        }
         public bool ReadBoolean() { return this.reader.ReadByte() != 0; }
-
         public float ReadSingle() { return this.reader.ReadSingle(); }
-
+        public int ReadInt32() { return this.reader.ReadInt32(); }
+        public uint ReadUInt32() { return this.reader.ReadUInt32(); }
+        public Vector2 ReadVector2()
+        {
+            return new Vector2(this.ReadSingle(), this.ReadSingle());
+        }
         public Vector3 ReadVector3()
         {
-            return new Vector3(this.ReadSingle(), this.ReadSingle(), this.ReadSingle());
+            return new Vector3(this.ReadVector2(), this.ReadSingle());
         }
-
         public Vector4 ReadVector4()
         {
             return new Vector4(this.ReadVector3(), this.ReadSingle());
         }
-
         public Quaternion ReadQuaternion()
         {
             return new Quaternion(this.ReadVector4());
@@ -77,66 +78,65 @@ namespace Wargame.Data.IO.Map
             return Color.FromNonPremultiplied(this.ReadVector4());
         }
 
-        public string ReadString()
+        public Guid ReadGuid()
         {
-            return this.ReadPascalString();
+            return new Guid(this.reader.ReadBytes(16));
         }
 
         public GameObject ReadGameObject()
         {
-            var goType = this.ReadString();
-            foreach (var type in this.GetAssemblyTypes())
+            var types = this.GetAssemblyTypes();
+            var objType = this.ReadString();
+            var type = types
+                .FirstOrDefault(t => t.Name.SequenceEqual(objType));
+
+            if (type == null) { return null; }
+
+            var instance = (GameObject)Activator.CreateInstance(type);
+            if (type.GetInterface(nameof(ISerializationObject)) != null)
             {
-                if (type.Name.SequenceEqual(goType))
+                ((ISerializationObject)instance).Deserialize(this);
+            }
+
+            var compCount = this.reader.ReadInt32();
+            for (var i = 0; i < compCount; i++)
+            {
+                var component = this.ReadGameComponent();
+                if (component != null)
                 {
-                    var instance = (GameObject)Activator.CreateInstance(type);
-                    if (type.GetInterface(nameof(IObjectSerialization)) != null)
-                    {
-                        ((IObjectSerialization)instance).Deserialize(this);
-                    }
-
-                    var components = this.reader.ReadInt32();
-                    for (var i = 0; i < components; i++)
-                    {
-                        var component = this.ReadGameComponent();
-                        if (instance != null)
-                        {
-                            instance.AddComponent(component);
-                        }
-                    }
-
-                    return instance;
+                    instance.AddComponent(component);
                 }
             }
 
-            return null;
+            return instance;
         }
 
         public GameObjectComponent ReadGameComponent()
         {
-            var goType = this.ReadString();
-            foreach (var type in this.GetAssemblyTypes())
+            var types = this.GetAssemblyTypes();
+            var compName = this.ReadString();
+            var compType = types
+                .FirstOrDefault(t => t.Name.SequenceEqual(compName));
+            if (compType != null)
             {
-                if (type.Name.SequenceEqual(goType))
+                var component = (GameObjectComponent)Activator.CreateInstance(compType);
+                if (compType.GetInterface(nameof(ISerializationObject)) != null)
                 {
-                    var instance = (GameObjectComponent)Activator.CreateInstance(type);
-                    if (type.GetInterface(nameof(IObjectSerialization)) != null)
-                    {
-                        ((IObjectSerialization)instance).Deserialize(this);
-                    }
-
-                    return instance;
+                    ((ISerializationObject)component).Deserialize(this);
                 }
+
+                return component;
             }
 
             return null;
         }
+
 
         private IEnumerable<Type> GetAssemblyTypes()
         {
             if (this.SearchAssemblies.Count == 0) { return Enumerable.Empty<Type>(); }
 
-            var result = new List<Type>();
+            var typeList = new List<Type>();
             foreach (var asm in this.SearchAssemblies)
             {
                 Type[] types;
@@ -149,23 +149,32 @@ namespace Wargame.Data.IO.Map
                     types = ex.Types.Where(t => t != null).ToArray();
                 }
 
-                if (result.Count > 0)
-                {
-                    types = types.Except(result).ToArray();
-                }
-
-                result.AddRange(types);
+                typeList.AddRange(types.Except(typeList));
             }
 
-            return result;
+            return typeList;
         }
 
-        private string ReadPascalString()
+        private void ReadHeader()
         {
-            var len = this.reader.ReadInt32();
-            if (len > 255) { len = 255; }
+            if (!this.reader.ReadChars(MapWriter.MAGIC.Length).SequenceEqual(
+                MapWriter.MAGIC))
+            {
+                throw new InvalidDataException(
+                    "The header appears to be corrupt or invalid.");
+            }
+        }
 
-            return new string(this.reader.ReadChars(len));
+        private Encoding ReadEncoding(Stream instream)
+        {
+            var bytes = new byte[1];
+            instream.Read(bytes, 0, bytes.Length);
+
+            return bytes[0] == 0x00 ? Encoding.UTF8 :
+                   bytes[0] == 0x01 ? Encoding.Unicode :
+                   bytes[0] == 0x02 ? Encoding.UTF8 :
+                   bytes[0] == 0x03 ? Encoding.UTF7 :
+                   Encoding.ASCII;
         }
 
 

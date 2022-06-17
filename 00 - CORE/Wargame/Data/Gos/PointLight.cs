@@ -23,11 +23,7 @@ namespace Wargame.Data.Gos
     {
         public Color LightColor { get; set; }
 
-        public float Radius
-        {
-            get => this.Transform.Scale.X;
-            set => this.Transform.SetUniformScale(value);
-        }
+        public float Radius { get; set; }
 
         public float Intensity { get; internal set; }
 
@@ -42,22 +38,22 @@ namespace Wargame.Data.Gos
         }
 
 
-        protected override void OnSerialize(object sender, MapWriter writer)
-        {
-            writer.Write(this.LightColor);
-            writer.Write(this.Radius);
-            writer.Write(this.Intensity);
-
-            base.OnSerialize(sender, writer);
-        }
-
         protected override void OnDeserialize(object sender, MapReader reader)
         {
-            this.LightColor = reader.ReadColor();
-            this.Radius = reader.ReadSingle();
             this.Intensity = reader.ReadSingle();
+            this.Radius = reader.ReadSingle();
+            this.LightColor = reader.ReadColor();
 
             base.OnDeserialize(sender, reader);
+        }
+
+        protected override void OnSerialize(object sender, MapWriter writer)
+        {
+            writer.Write(this.Intensity);
+            writer.Write(this.Radius);
+            writer.Write(this.LightColor);
+
+            base.OnSerialize(sender, writer);
         }
     }
 }

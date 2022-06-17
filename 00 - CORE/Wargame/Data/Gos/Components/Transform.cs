@@ -16,12 +16,11 @@
 
 using Engine.Core;
 using Microsoft.Xna.Framework;
-using Wargame.Data.IO;
 using Wargame.Data.IO.Map;
 
 namespace Wargame.Data.Gos.Components
 {
-    public sealed class Transform : GameObjectComponent, IObjectSerialization
+    public sealed class Transform : GameObjectComponent, ISerializationObject
     {
         public bool UseUniformScale { get; set; }
 
@@ -117,34 +116,31 @@ namespace Wargame.Data.Gos.Components
         {
         }
 
-        public void Deserialize(MapReader mapReader)
+        public void Serialize(MapWriter writer)
         {
-            this.SetLocation(mapReader.ReadVector3());
-            this.SetRotation(mapReader.ReadSingle(), mapReader.ReadSingle(), mapReader.ReadSingle());
+            writer.Write(this.Position);
 
-            var useUniform = mapReader.ReadBoolean();
-            if (useUniform)
-            {
-                this.UseUniformScale = useUniform;
-                this.SetUniformScale(mapReader.ReadSingle());
-            }
-            else { this.SetScale(mapReader.ReadVector3()); }
+            writer.Write(this.yaw);
+            writer.Write(this.pitch);
+            writer.Write(this.roll);
+
+            writer.Write(this.UseUniformScale);
+            writer.Write(this.uniformScale);
+            writer.Write(this.scaleX);
+            writer.Write(this.scaleY);
+            writer.Write(this.scaleZ);
         }
 
-        public void Serialize(MapWriter mapWriter)
+        public void Deserialize(MapReader reader)
         {
-            mapWriter.Write(this.Position);
+            this.SetLocation(reader.ReadVector3());
+            this.SetRotation(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
 
-            mapWriter.Write(this.yaw);
-            mapWriter.Write(this.pitch);
-            mapWriter.Write(this.roll);
-
-            mapWriter.Write(this.UseUniformScale);
-            if (this.UseUniformScale)
-            {
-                mapWriter.Write(this.uniformScale);
-            }
-            else { mapWriter.Write(this.Scale); }
+            this.UseUniformScale = reader.ReadBoolean();
+            this.uniformScale = reader.ReadSingle();
+            this.scaleX = reader.ReadSingle();
+            this.scaleY = reader.ReadSingle();
+            this.scaleZ = reader.ReadSingle();
         }
     }
 }

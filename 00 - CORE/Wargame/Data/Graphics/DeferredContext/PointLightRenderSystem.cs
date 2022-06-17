@@ -53,7 +53,7 @@ namespace Wargame.Data.Graphics.DeferredContext
         {
             var loader = ServiceProvider.Instance.GetService<ILoader>();
             this.renderer = new ModelRenderer();
-            this.renderer.Model = loader.Load<Model>("Models\\Sphere");
+            this.renderer.LoadModel("Models\\Sphere");
 
             this.lights = Enumerable.Empty<PointLight>();
             this.pointEffect = new PointLightEffect(this.RenderSystem);
@@ -91,11 +91,6 @@ namespace Wargame.Data.Graphics.DeferredContext
         public void Remove(PointLight pointLight)
         {
             this.lights = this.lights.Except(new[] { pointLight });
-        }
-
-        public void SetLights(IEnumerable<PointLight> lights)
-        {
-            this.lights = lights.ToList();
         }
 
         public void DrawLights(Camera camera)

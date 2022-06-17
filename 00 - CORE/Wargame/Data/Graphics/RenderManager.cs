@@ -122,7 +122,7 @@ namespace Wargame.Data.Graphics
                 this.resolution.X,
                 this.resolution.Y,
                 false,
-                SurfaceFormat.ColorSRgb,
+                SurfaceFormat.Color,
                 DepthFormat.Depth24Stencil8);
         }
 
@@ -167,23 +167,21 @@ namespace Wargame.Data.Graphics
 
             var nonLightOrCameraEntities =
                 actors.Except(actors.OfType<PointLight>());
-            nonLightOrCameraEntities =
-                nonLightOrCameraEntities.Except(actors.OfType<Camera>());
 
             // Main-Process
             this.DeferredSystem.Begin();
-            this.DeferredSystem.RenderToGBuffer(nonLightOrCameraEntities);
+            this.DeferredSystem.RenderToGBuffer(actors);
             this.DeferredSystem.End();
 
-            this.ShadowSystem.SetActors(nonLightOrCameraEntities);
+            this.ShadowSystem.SetActors(actors);
             this.ShadowSystem.Begin();
             this.ShadowSystem.RenderCascadeScene();
             this.ShadowSystem.End();
 
+
             this.LightSystem.Begin();
             if (!this.hideLights)
             {
-                this.LightSystem.SetLights(actors.OfType<PointLight>());
                 this.LightSystem.DrawLights(camera);
             }
             this.LightSystem.End();

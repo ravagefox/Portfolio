@@ -16,8 +16,12 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
+using Engine.Core;
+using Engine.Data;
 using Microsoft.Xna.Framework;
+using Wargame.Data.Gos.Components;
 
 namespace Wargame.Data.IO.Map
 {
@@ -25,70 +29,94 @@ namespace Wargame.Data.IO.Map
     {
         public static readonly char[] MAGIC = new char[] { 'M', 'Z', 'X' };
 
+
         private BinaryWriter writer;
 
 
-        public MapWriter(Stream outStream)
+        public MapWriter(Stream innerStream, Encoding encoding)
         {
-            this.writer = new BinaryWriter(outStream, Encoding.UTF8);
+            this.WriteEncoding(innerStream, encoding);
+
+            this.writer = new BinaryWriter(innerStream, encoding);
             this.writer.Write(MAGIC);
         }
 
-        public void Write(Guid id)
+        private void WriteEncoding(Stream innerStream, Encoding encoding)
         {
-            this.writer.Write(id.ToByteArray());
+            var bytes = new byte[1];
+            if (encoding == Encoding.UTF8)
+            {
+                bytes = new byte[1] { 0x00 };
+            }
+            if (encoding == Encoding.Unicode)
+            {
+                bytes = new byte[1] { 0x01 };
+            }
+            if (encoding == Encoding.UTF8)
+            {
+                bytes = new byte[1] { 0x02 };
+            }
+            if (encoding == Encoding.UTF7)
+            {
+                bytes = new byte[1] { 0x03 };
+            }
+
+            innerStream.Write(bytes, 0, bytes.Length);
         }
 
-        public void Write(float value)
-        {
-            this.writer.Write(value);
-        }
-
-        public void Write(bool value)
-        {
-            this.writer.Write(value ? (byte)0x1 : (byte)0x0);
-        }
-
-        public void Write(uint value) { this.writer.Write(value); }
-
-        public void Write(int value) { this.writer.Write(value); }
-
-        public void Write(Vector3 value)
-        {
-            this.writer.Write(value.X);
-            this.writer.Write(value.Y);
-            this.writer.Write(value.Z);
-        }
-
-        public void Write(Vector4 value)
-        {
-            this.writer.Write(value.X);
-            this.writer.Write(value.Y);
-            this.writer.Write(value.Z);
-            this.writer.Write(value.W);
-        }
-
-        public void Write(Quaternion value)
-        {
-            this.Write(value.ToVector4());
-        }
-
-        public void Write(Color value)
-        {
-            this.Write(value.ToVector4());
-        }
 
         public void Write(string value)
         {
-            var len = value.Length > byte.MaxValue ? byte.MaxValue : value.Length;
-            var chars = value.ToCharArray();
-            if (len == byte.MaxValue)
+            if (string.IsNullOrEmpty(value))
             {
-                Array.Resize(ref chars, byte.MaxValue);
+                this.writer.Write(0);
+                return;
             }
 
-            this.writer.Write(len);
+            var len = value.Length;
+            if (len > byte.MaxValue) { len = byte.MaxValue; }
+            var chars = value.ToCharArray().Take(len).ToArray();
+
+            this.writer.Write(chars.Length);
             this.writer.Write(chars);
+        }
+        public void Write(float single) { this.writer.Write(single); }
+        public void Write(int value) { this.writer.Write(value); }
+        public void Write(uint value) { this.writer.Write(value); }
+        public void Write(Vector2 value) { this.writer.Write(value.X); this.writer.Write(value.Y); }
+        public void Write(Vector3 value) { this.writer.Write(value.X); this.writer.Write(value.Y); this.writer.Write(value.Z); }
+        public void Write(Vector4 value) { this.writer.Write(value.X); this.writer.Write(value.Y); this.writer.Write(value.Z); this.writer.Write(value.W); }
+        public void Write(Quaternion value) { this.Write(value.ToVector4()); }
+        public void Write(Color color) { this.Write(color.ToVector4()); }
+        public void Write(AssetId id) { this.writer.Write(id.Id.ToByteArray()); }
+        public void Write(GameObject gameObject)
+        {
+            this.Write(gameObject.GetType().Name);
+            var components = gameObject.AllComponents
+                .Where(comp => comp.GetType().GetInterface(nameof(ISerializationObject)) != null)
+                .Where(comp => comp.GetType() != typeof(Transform));
+
+            if (gameObject.GetType().GetInterface(nameof(ISerializationObject)) != null)
+            {
+                ((ISerializationObject)gameObject).Serialize(this);
+            }
+
+            this.writer.Write(components.Count());
+            foreach (var comp in components)
+            {
+                this.Write(comp);
+            }
+        }
+
+        public void Write(bool value) { this.writer.Write(value ? (byte)1 : (byte)0); }
+
+        public void Write(GameObjectComponent component)
+        {
+            this.Write(component.GetType().Name);
+            if (component.GetType().GetInterface(nameof(ISerializationObject)) != null)
+            {
+                ((ISerializationObject)component).Serialize(this);
+            }
         }
 
         public void Dispose()

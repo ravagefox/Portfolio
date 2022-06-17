@@ -19,6 +19,7 @@ using Engine.Data;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Wargame.Data.Gos.Components;
+using Wargame.Data.IO.Map;
 
 namespace Wargame.Data.Gos.CameraTypes
 {
@@ -27,19 +28,39 @@ namespace Wargame.Data.Gos.CameraTypes
         public float FOVAngle { get; set; }
         public float FarDistance { get; set; }
 
-        public bool IsMouseCentered
-        {
-            get => this.mouseLook.IsMouseCenterScreen;
-            set => this.mouseLook.IsMouseCenterScreen = value;
-        }
+        public bool IsMouseCentered { get; set; }
+        public bool IsInverted { get; set; }
+
+
 
         private MouseLookComponent mouseLook;
         private KeyboardComponent keyboardComponent;
+
 
         public FirstPersonCamera() : base()
         {
             this.mouseLook = new MouseLookComponent();
             this.keyboardComponent = new KeyboardComponent();
+        }
+
+        protected override void OnDeserialize(object sender, MapReader reader)
+        {
+            this.FOVAngle = reader.ReadSingle();
+            this.FarDistance = reader.ReadSingle();
+            this.IsMouseCentered = reader.ReadBoolean();
+            this.IsInverted = reader.ReadBoolean();
+
+            base.OnDeserialize(sender, reader);
+        }
+
+        protected override void OnSerialize(object sender, MapWriter writer)
+        {
+            writer.Write(this.FOVAngle);
+            writer.Write(this.FarDistance);
+            writer.Write(this.IsMouseCentered);
+            writer.Write(this.IsInverted);
+
+            base.OnSerialize(sender, writer);
         }
 
         public override void Initialize()
@@ -52,6 +73,9 @@ namespace Wargame.Data.Gos.CameraTypes
 
         public override void Update(Time frameTime)
         {
+            this.mouseLook.IsMouseCenterScreen = this.IsMouseCentered;
+            this.mouseLook.IsInverted = this.IsInverted;
+
             var transformedReference = Vector3.Transform(Vector3.Backward,
                 Matrix.CreateFromQuaternion(this.Transform.Rotation));
             var lookat = this.Transform.Position + transformedReference;

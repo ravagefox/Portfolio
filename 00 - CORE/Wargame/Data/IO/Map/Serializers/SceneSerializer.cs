@@ -14,66 +14,58 @@
    other dealings in the software.
 */
 
-using System.IO;
-using System.Linq;
+using System;
 using Engine.Core;
-using Engine.Data;
-using Wargame.Data.Scenes;
 
 namespace Wargame.Data.IO.Map.Serializers
 {
-    public sealed class SceneSerializer : IObjectSerializer<Scene>
+    public sealed class SceneSerializer : ISerializationObject
     {
-        public void Serialize(Scene instance, MapWriter writer)
+        public GameObjectCollection Actors { get; }
+
+
+        private bool readonlyMode;
+
+
+        public SceneSerializer()
         {
-            writer.Write(instance.Name);
-            writer.Write(instance.Id.Id);
+            this.readonlyMode = true;
+            this.Actors = new GameObjectCollection();
+        }
 
-            writer.Write(instance.Actors.Count);
-            foreach (var actor in instance.Actors)
+        public SceneSerializer(GameObjectCollection actors)
+        {
+            this.readonlyMode = false;
+            this.Actors = actors;
+        }
+
+
+        public void Deserialize(MapReader reader)
+        {
+            if (!this.readonlyMode)
             {
-                if (actor is IObjectSerialization objectSerialization)
-                {
-                    writer.Write(actor.GetType().Name);
+                throw new Exception("Can only serialize to the stream.");
+            }
 
-                    objectSerialization.Serialize(writer);
-                    this.SerializeComponents(actor, writer);
+            var actorCount = reader.ReadInt32();
+            for (var i = 0; i < actorCount; i++)
+            {
+                var gameObject = reader.ReadGameObject();
+                if (gameObject != null)
+                {
+                    this.Actors.Add(gameObject);
                 }
             }
         }
 
-        private void SerializeComponents(GameObject actor, MapWriter writer)
+        public void Serialize(MapWriter writer)
         {
-            var components = actor.AllComponents.OfType<IObjectSerialization>();
-            writer.Write(components.Count());
-            foreach (var component in components)
+            if (this.readonlyMode) { throw new Exception("Can only deserialize from the stream."); }
+
+            writer.Write(this.Actors.Count);
+            foreach (var actor in this.Actors)
             {
-                writer.Write(component.GetType().Name);
-                component.Serialize(writer);
-            }
-        }
-
-        public static Scene Deserialize(Stream instream)
-        {
-            using (var reader = new MapReader(instream))
-            {
-                var scene = new WorldScene();
-
-                var worldScene = new WorldScene();
-                worldScene.Name = reader.ReadString();
-                worldScene.Id = new AssetId(reader.ReadGuid());
-
-                var actorCount = reader.ReadInt32();
-                for (var i = 0; i < actorCount; i++)
-                {
-                    var actor = reader.ReadGameObject();
-                    if (actor != null)
-                    {
-                        worldScene.Actors.Add(actor);
-                    }
-                }
-
-                return scene;
+                writer.Write(actor);
             }
         }
     }

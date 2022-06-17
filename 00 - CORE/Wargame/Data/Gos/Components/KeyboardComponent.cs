@@ -23,7 +23,7 @@ namespace Wargame.Data.Gos.Components
 {
     public sealed class KeyboardComponent : GameObjectComponent
     {
-        public int MoveSpeed { get; set; } = 15;
+        public int MoveSpeed { get; set; } = 1;
 
 
         private Keyboard keyboard;

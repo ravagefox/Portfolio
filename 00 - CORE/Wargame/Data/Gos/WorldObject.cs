@@ -14,62 +14,66 @@
    other dealings in the software.
 */
 
+using System;
 using Engine.Core;
-using Microsoft.Xna.Framework;
+using Engine.Data;
 using Wargame.Data.Gos.Components;
-using Wargame.Data.Graphics.Editor;
-using Wargame.Data.IO;
 using Wargame.Data.IO.Map;
-using Wargame.Data.Math;
 
 namespace Wargame.Data.Gos
 {
-    public abstract class WorldObject : GameObject, IBoundContainer, IObjectSerialization
+    public class WorldObject : GameObject, ISerializationObject
     {
-        public Transform Transform { get; }
-
-        public virtual BoundingBox BoundingBox =>
-            new BoundingBox(
-                this.Transform.Position - (this.Transform.Scale / 2),
-                this.Transform.Position + (this.Transform.Scale / 2));
+        public Transform Transform { get; private set; }
 
 
-        private RigidBody rigidBody;
-        private GizmoComponent gizmo;
+        public event EventHandler Serializing;
+        public event EventHandler Deserializing;
 
 
         public WorldObject() : base()
         {
             this.Transform = new Transform();
-            this.rigidBody = new RigidBody();
-            this.gizmo = new GizmoComponent();
         }
 
         public override void Initialize()
         {
-            this.AddComponent(this.rigidBody);
-            this.AddComponent(this.Transform);
-            this.AddComponent(this.gizmo);
+            //this.AddComponent(this.Transform, false);
 
             base.Initialize();
         }
 
-        protected virtual void OnDeserialize(object sender, MapReader reader)
-        {
-        }
 
         protected virtual void OnSerialize(object sender, MapWriter writer)
         {
+            writer.Write(this.Name);
+            writer.Write(this.Id);
+
+            writer.Write(this.Transform);
+
+            Serializing?.Invoke(sender, EventArgs.Empty);
         }
 
-        public void Deserialize(MapReader reader)
+        protected virtual void OnDeserialize(object sender, MapReader reader)
         {
-            this.OnDeserialize(this, reader);
+            this.Name = reader.ReadString();
+            this.Id = new AssetId(reader.ReadGuid());
+
+            this.Transform = (Transform)reader.ReadGameComponent();
+            this.AddComponent(this.Transform);
+
+            Deserializing?.Invoke(sender, EventArgs.Empty);
         }
+
+
 
         public void Serialize(MapWriter writer)
         {
             this.OnSerialize(this, writer);
+        }
+        public void Deserialize(MapReader reader)
+        {
+            this.OnDeserialize(this, reader);
         }
     }
 }

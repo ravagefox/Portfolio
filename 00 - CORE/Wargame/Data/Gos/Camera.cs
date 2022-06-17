@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Wargame.Data.IO.Map;
 
 namespace Wargame.Data.Gos
 {
@@ -29,6 +30,8 @@ namespace Wargame.Data.Gos
 
         public Matrix Projection { get; set; }
 
+        public bool IsMainCamera { get; set; }
+
 
         private static readonly HashSet<Camera> allCameras = new HashSet<Camera>();
 
@@ -36,6 +39,21 @@ namespace Wargame.Data.Gos
         public Camera() : base()
         {
             allCameras.Add(this);
+        }
+
+        protected override void OnSerialize(object sender, MapWriter writer)
+        {
+            writer.Write(this.IsMainCamera);
+
+            base.OnSerialize(sender, writer);
+        }
+
+        protected override void OnDeserialize(object sender, MapReader reader)
+        {
+            this.IsMainCamera = reader.ReadBoolean();
+            if (this.IsMainCamera) { this.SetCurrent(); }
+
+            base.OnDeserialize(sender, reader);
         }
 
         public void SetCurrent()

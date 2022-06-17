@@ -14,25 +14,47 @@
    other dealings in the software.
 */
 
+using Engine.Assets;
 using Engine.Core;
 using Engine.Data;
 using Engine.Graphics.Data.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Wargame.Data.IO.Map;
 
 namespace Wargame.Data.Gos.Components
 {
-    public sealed class ModelRenderer : GameObjectComponent
+    public sealed class ModelRenderer : GameObjectComponent, ISerializationObject
     {
         public GraphicsDevice GraphicsDevice =>
             ServiceProvider.Instance.GetService<IGraphicsDeviceService>()
             .GraphicsDevice;
 
-        public Model Model { get; set; }
-        public Texture2D Texture { get; set; }
+        public Model Model { get; private set; }
+        public Texture2D Texture { get; private set; }
         public bool IsVisible { get; set; } = true;
         public bool IsShadowCaster { get; set; } = true;
         public bool CanReceiveShadows { get; set; } = true;
+
+        private ILoader Content =>
+            ServiceProvider.Instance.GetService<ILoader>();
+
+
+        private string modelPath;
+        private string texturePath;
+
+
+        public void LoadModel(string path)
+        {
+            if (string.IsNullOrEmpty(this.modelPath)) { this.modelPath = path; }
+            this.Model = this.Content.Load<Model>(path);
+        }
+        public void LoadTexture(string path)
+        {
+            if (string.IsNullOrEmpty(this.texturePath)) { this.texturePath = path; }
+            this.Texture = this.Content.Load<Texture2D>(path);
+        }
+
 
         public override void Initialize()
         {
@@ -103,6 +125,24 @@ namespace Wargame.Data.Gos.Components
             }
 
             return 0;
+        }
+
+        public void Serialize(MapWriter writer)
+        {
+            writer.Write(this.IsVisible);
+            writer.Write(this.modelPath);
+            writer.Write(this.texturePath);
+            writer.Write(this.CanReceiveShadows);
+            writer.Write(this.IsShadowCaster);
+        }
+
+        public void Deserialize(MapReader reader)
+        {
+            this.IsVisible = reader.ReadBoolean();
+            this.LoadModel(reader.ReadString());
+            this.LoadTexture(reader.ReadString());
+            this.CanReceiveShadows = reader.ReadBoolean();
+            this.IsShadowCaster = reader.ReadBoolean();
         }
     }
 }
