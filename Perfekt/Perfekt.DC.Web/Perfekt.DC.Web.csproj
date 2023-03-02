@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <BaseOutputPath>..\..\04 - BUILD\Perfekt.DC.Web\</BaseOutputPath>
+	<Version>0.0.10.5812</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\00 - CORE\Perfekt.Core\Perfekt.Core.csproj" />
+    <ProjectReference Include="..\..\00 - CORE\Perfekt.Logrhythm\Perfekt.Net.HTTPService.Logrhythm.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ReadMe.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
