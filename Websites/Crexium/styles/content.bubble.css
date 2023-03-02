@@ -1,0 +1,22 @@
+
+.content-bubble {
+    max-width: 350px;
+    min-width: 350px;
+    border-radius: 30px;
+    margin-left: 14px;
+}
+
+.content-bubble-container {
+    display: inline-flex;
+}
+
+@media screen and (max-width: 480px) {
+    .content-bubble-container {
+        display: block;
+    }
+
+    .content-bubble {
+        margin-left: 0px;
+        margin-bottom: 14px;
+    }
+}

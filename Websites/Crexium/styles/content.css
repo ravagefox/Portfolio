@@ -1,0 +1,11 @@
+
+.content-medium {
+    max-width: 1280px;
+    /*transform: translateY(50%);*/
+}
+
+@media screen and (max-width: 480px){
+    .content-medium {
+        /*transform:translateY(10%);*/
+    }
+}

@@ -1,0 +1,111 @@
+fieldset {
+    border-color: #2e86f1;
+    text-transform: uppercase;
+    font-size: 15px;
+    padding-top: 0;
+}
+
+form {
+    display: block;
+    background-color: #eee;
+    font-size: 22px;
+    font-family: inherit;
+    margin: 14px 12px;
+    max-width: 550px;
+    border: 1px solid black;
+    border-radius: 3px;
+    box-shadow: 0 0 5px 0 black;
+    position: relative;
+    text-align: center;
+}
+
+    form h1,
+    form h2,
+    form h3,
+    form h4,
+    form h5,
+    form h6 {
+        text-transform: uppercase;
+        background-color: #2e86f1c4;
+    }
+
+textarea {
+    resize: none;
+    font-family: inherit;
+}
+
+input[type=text],
+input[type=email],
+input[type=password],
+input[type=file],
+textarea,
+select {
+    font-size: 18px;
+    display: block;
+    border-radius: 4px;
+    padding: 10px 12px;
+    margin: 5px auto;
+    border: 1px solid #2f86f1;
+    opacity: 1;
+    transition: ease-in-out 0.2s;
+    background-color: inherit;
+    width: 90%;
+    color: black;
+}
+
+    input[type=text]:hover,
+    input[type=email]:hover,
+    input[type=password]:hover,
+    input[type=file]:hover,
+    textarea:hover,
+    select:hover {
+        opacity: 1;
+        transition: ease-in-out 0.2s;
+    }
+
+    input[type=text]:focus,
+    input[type=email]:focus,
+    input[type=password]:focus,
+    textarea:focus {
+        opacity: 1;
+        transition: ease-in-out 0.2s;
+        box-shadow: 0 0 10px #2e86f1;
+    }
+
+
+input[type=button],
+input[type=submit],
+button {
+    cursor: pointer;
+    font-size: 18px;
+    display: block;
+    border-radius: 3px;
+    margin: 14px 16px;
+    width: 90%;
+    height: 40px;
+    text-transform: uppercase;
+    background: linear-gradient(to top, #0094ff, #0073c6);
+    border: none;
+}
+
+    input[type=button]:hover,
+    input[type=submit]:hover,
+    button:hover {
+        background: linear-gradient(to top, #0083ee, #0062b5);
+        color: white;
+        border: 1px solid #0050cc;
+        box-shadow: 0 0 10px #0083ee;
+    }
+
+@media screen and (max-width: 480px) {
+    
+    input[type=button],
+    input[type=submit],
+    input[type=text],
+    textarea,
+    input[type=email],
+    button {
+        margin: 5px auto;
+        max-width: 85%;
+    }
+}
