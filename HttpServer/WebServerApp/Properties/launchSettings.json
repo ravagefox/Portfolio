@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "WebServerApp": {
+      "commandName": "Project",
+      "commandLineArgs": "/config \"Z:\\Projects\\HttpServer\\04 - BUILD\\WebServerApp\\x64\\Debug\\net6.0\\config.xml\" /inclusions Crexium.WebApp.dll",
+      "remoteDebugEnabled": true,
+      "remoteDebugMachine": "PHYLEX:4026",
+      "authenticationMode": "Windows"
+    }
+  }
+}
