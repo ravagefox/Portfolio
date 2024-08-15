@@ -1,0 +1,89 @@
+/* Custom Styles */
+* {
+    color: var(--text-color);
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+}
+
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+:root {
+    /* Light Theme Colors */
+    --primary-color: #3486eb;
+    --secondary-color: #e1e7ed;
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --sidebar-background: #e1e7ed;
+    --content-background: #f0f0f0;
+    --button-background: #00796b;
+    --button-text-color: #ffffff;
+}
+
+[data-theme="dark"] {
+    /* Dark Theme Colors */
+    --primary-color: #3486eb;
+    --secondary-color: #00251a;
+    --background-color: #121212;
+    --text-color: white;
+    --sidebar-background: #333333;
+    --content-background: #333333;
+    --button-background: #004d40;
+    --button-text-color: #ffffff;
+}
+
+/* Applying Theme Colors */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+nav {
+    background-color: var(--primary-color);
+}
+
+.sidenav {
+    background-color: var(--sidebar-background);
+    color: var(--text-color);
+}
+
+.card {
+    background-color: var(--content-background);
+}
+
+.btn {
+    background-color: var(--button-background);
+    color: var(--button-text-color);
+}
+
+.content {
+    padding: 80px;
+    transition: margin-left ease-in-out 0.3s;
+}
+
+.hidden-content {
+    display: none;
+}
+
+/* Sidenav collapsed styles */
+.sidenav-collapsed {
+    width: 60px;
+}
+
+    .sidenav-collapsed .collapsible-item-text {
+        display: none;
+    }
+
+/* Adjust content margin for fixed sidebar on large screens */
+@media only screen and (min-width: 992px) {
+    .content {
+        margin-left: 240px;
+    }
+
+    .sidenav-collapsed + .content {
+        margin-left: 60px;
+    }
+}
